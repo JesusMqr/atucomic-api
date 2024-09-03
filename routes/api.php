@@ -6,3 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login',[AuthController::class,'login']);
 Route::post('register',[AuthController::class,'register']);
+
+Route::middleware('auth:sanctum')->group(function(){
+    require __DIR__.'/api_v1.php';
+});
