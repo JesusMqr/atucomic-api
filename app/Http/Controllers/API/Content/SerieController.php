@@ -16,7 +16,7 @@ class SerieController extends Controller
 {
     use AuthorizesRequests;
     public function index(){
-        $series = Serie::orderBy('updated_at','desc')->simplePaginate(5);
+        $series = Serie::orderBy('updated_at','desc')->paginate(10  );
         return new SerieCollection($series);
     }
     public function store(StoreSerieRequest $request){
@@ -44,5 +44,15 @@ class SerieController extends Controller
         $this->authorize('delete', $series);
         $series->delete();
         return response()->json(null,Response::HTTP_NO_CONTENT);
+    }
+
+    public function search(Request $request){
+        $request->validate([
+            'query'=>'required|string',
+        ]);
+        $searchTerm = $request->query('query');
+
+        $series = Serie::where('title','LIKE','%'.$searchTerm.'%')->get();;
+        return response()->json($series);
     }
 }
