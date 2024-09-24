@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -49,5 +50,25 @@ class AuthController extends Controller
                 'token'=>$token,
             ]
         ],Response::HTTP_CREATED);
+    }
+
+    public function Logout(Request $request){
+        $request->user()->currentAccessToken()->delete(); // Revoca el token actual
+        return response()->json([
+           'message'=>'Successfully logged out'
+        ], Response::HTTP_OK);
+    }
+
+    public function Profile(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return response()->json(new ProfileResource($user),Response::HTTP_OK);
     }
 }
