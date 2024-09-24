@@ -22,7 +22,11 @@ class ChapterResource extends JsonResource
                 'created_at'=>$this->created_at,
             ],
             'relationships' => [
-                'images' => new ImageCollection($this->images)
+                'images' => new ImageCollection($this->images),
+                'serie'=>[
+                    'id'=>$this->serie->id,
+                    'name'=>$this->serie->title,
+                ]
             ],
         ];
     }
