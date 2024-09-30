@@ -15,7 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 class SerieController extends Controller
 {
     use AuthorizesRequests;
-    public function index(){
+    public function index(Request $request){
+
+        if($request->has('query')){
+            return $this->search($request);
+        }
+
         $series = Serie::orderBy('updated_at','desc')->paginate(10  );
         return new SerieCollection($series);
     }
@@ -53,6 +58,6 @@ class SerieController extends Controller
         $searchTerm = $request->query('query');
 
         $series = Serie::where('title','LIKE','%'.$searchTerm.'%')->get();;
-        return response()->json($series);
+        return new SerieCollection($series);
     }
 }
