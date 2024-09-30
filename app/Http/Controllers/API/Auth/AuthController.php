@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -59,16 +58,5 @@ class AuthController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function Profile(Request $request)
-    {
-        $user = $request->user();
 
-        if (!$user) {
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        return response()->json(new ProfileResource($user),Response::HTTP_OK);
-    }
 }
