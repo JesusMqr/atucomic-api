@@ -1,66 +1,438 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ATUNADO API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## API REST - Rutas públicas
 
-## About Laravel
+### Series
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+#### Obtener una lista de series
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   URL : "/public/series"
+-   Método : GET
+-   Descripcion: Retorna una lista paginada de series.
+-   Parametros:
+    -   query (opcional): Filtrar series por título.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ejemplo de respuesta:
 
-## Learning Laravel
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "type": "serie",
+            "attributes": {
+                "title": "Serie 1",
+                "image": "url_to_image",
+                "updated_at": "2024-09-30T00:00:00Z"
+            }
+        }
+    ],
+    "links": {
+        "first": "http://api.example.com/series?page=1",
+        "last": "http://api.example.com/series?page=3",
+        "prev": null,
+        "next": "http://api.example.com/series?page=2"
+    },
+    "meta": {
+        "current_page": 1,
+        "total_pages": 3
+    }
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Obtener una serie especifica
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   URL: /public/series/{id}
+-   Método: GET
+-   Descripción: Retorna la información detallada de una serie específica.
+-   Parámetros:
+    -   id (requerido): ID de la serie.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Ejemplo de respuesta:
 
-## Laravel Sponsors
+```json
+{
+    "id": 1,
+    "type": "serie",
+    "attributes": {
+        "title": "Serie 1",
+        "description": "Descripción de la serie 1",
+        "image": "url_to_image",
+        "author": "nombre_del_autor",
+        "updated_at": "2024-09-30T00:00:00Z"
+    },
+    "relationships": {
+        "chapters": [
+            {
+                "id": 1,
+                "type": "chapter",
+                "attributes": {
+                    "order": 1,
+                    "created_at": "2024-09-30T00:00:00Z"
+                }
+            }
+        ]
+    }
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+#### Obtener un capítulo específico
 
-### Premium Partners
+-   URL: /public/chapters/{id}
+-   Método: GET
+-   Descripción: Retorna la información de un capítulo específico de una serie.
+-   Parámetros:
+    -   id (requerido): ID del capítulo.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Ejemplo de respuesta:
 
-## Contributing
+```json
+{
+    "id": 1,
+    "type": "chapter",
+    "attributes": {
+        "order": 1,
+        "created_at": "2024-09-30T00:00:00Z"
+    },
+    "relationships": {
+        "images": [
+            {
+                "id": 1,
+                "type": "image",
+                "attributes": {
+                    "order": 1,
+                    "image": "url_to_image"
+                }
+            }
+        ],
+        "serie": {
+            "id": 1,
+            "name": "Serie 1"
+        }
+    }
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## API REST - Rutas Protegidas
 
-## Code of Conduct
+Autenticación: Todas las rutas en este prefijo requieren autenticación con token Bearer (Sanctum).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Encabezado de Autenticación:
 
-## Security Vulnerabilities
+```markdown
+Authorization: Bearer <TOKEN_DE_AUTENTICACIÓN>
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Series
 
-## License
+#### Listar todas las series
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   URL: /v1/series
+-   Método: GET
+-   Descripción: Retorna una lista de todas las series disponibles.
+-   Autenticación requerida: Sí (Bearer Token).
+
+Ejemplo de respuesta:
+
+```json
+{
+    "data": [
+        {
+            "id": 1,
+            "type": "serie",
+            "attributes": {
+                "title": "Serie 1",
+                "image": "url_to_image",
+                "updated_at": "2024-09-30T00:00:00Z"
+            }
+        }
+    ]
+}
+```
+
+#### Crear una nueva serie
+
+-   URL: /v1/series
+-   Método: POST
+-   Descripción: Crea una nueva serie.
+-   Autenticación requerida: Sí (Bearer Token).
+-   Parámetros:
+    -   title (requerido): Título de la serie.
+    -   description (opcional): Descripción de la serie.
+    -   image (opcional): URL de la imagen de la serie.
+
+Ejemplo de cuerpo de la petición:
+
+```json
+{
+    "title": "Nueva Serie",
+    "description": "Descripción de la nueva serie",
+    "image": "url_to_image"
+}
+```
+
+Ejemplo de la respuesta:
+
+```json
+{
+    "id": 2,
+    "type": "serie",
+    "attributes": {
+        "title": "Nueva Serie",
+        "description": "Descripción de la nueva serie",
+        "image": "url_to_image",
+        "updated_at": "2024-09-30T00:00:00Z"
+    }
+}
+```
+
+#### Mostrar una serie específica
+
+-   URL: /v1/series/{id}
+-   Método: GET
+-   Descripción: Retorna la información detallada de una serie específica.
+-   Autenticación requerida: Sí (Bearer Token).
+-   Parámetros:
+    -   id (requerido): ID de la serie.
+
+Ejemplo de respuesta:
+
+```json
+{
+    "id": 1,
+    "type": "serie",
+    "attributes": {
+        "title": "Serie 1",
+        "description": "Descripción de la serie 1",
+        "image": "url_to_image",
+        "updated_at": "2024-09-30T00:00:00Z"
+    },
+    "relationships": {
+        "chapters": [
+            {
+                "id": 1,
+                "type": "chapter",
+                "attributes": {
+                    "order": 1,
+                    "created_at": "2024-09-30T00:00:00Z"
+                }
+            }
+        ]
+    }
+}
+```
+
+#### Actualizar una serie existente
+
+-   URL: /v1/series/{id}
+-   Método: POST
+-   Descripción: Actualiza los datos de una serie existente.
+-   Autenticación requerida: Sí (Bearer Token).
+-   Parámetros:
+    -   id (requerido): ID de la serie.
+    -   title (opcional): Título de la serie.
+    -   description (opcional): Descripción de la serie.
+    -   image (opcional): URL de la imagen de la serie.
+
+Ejemplo de cuerpo de la petición:
+
+```json
+{
+    "id": 1,
+    "title": "Serie Actualizada",
+    "description": "Descripción actualizada",
+    "image":"url_to_image",
+    "_method":"PUT"
+}
+```
+
+Ejemplo de respuesta:
+
+```json
+{
+    "id": 1,
+    "type": "serie",
+    "attributes": {
+        "title": "Serie Actualizada",
+        "description": "Descripción actualizada",
+        "image": "url_to_image",
+        "updated_at": "2024-09-30T00:00:00Z"
+    }
+}
+```
+#### Eliminar una serie
+- URL: /v1/series/{id}
+- Método: DELETE
+- Descripción: Elimina una serie específica.
+- Autenticación requerida: Sí (Bearer Token).
+- Parámetros:
+    - id (requerido): ID de la serie.
+
+Ejemplo de respuesta:
+
+```json
+{
+  "message": "Serie eliminada correctamente."
+}
+```
+
+### Capítulos
+#### Listar todos los capítulos de una serie
+- URL: /v1/chapters
+- Método: GET
+- Descripción: Retorna una lista de capítulos disponibles.
+- Autenticación requerida: Sí (Bearer Token).
+
+Ejemplo de respuesta:
+
+```json 
+{
+  "data": [
+    {
+      "id": 1,
+      "type": "chapter",
+      "attributes": {
+        "order": 1,
+        "created_at": "2024-09-30T00:00:00Z"
+      }
+    }
+  ]
+}
+```
+
+#### Crear un nuevo capítulo
+- URL: /v1/chapters
+- Método: POST
+- Descripción: Crea un nuevo capítulo para una serie.
+- Autenticación requerida: Sí (Bearer Token).
+- Parámetros:
+    - order (requerido): Orden del capítulo.
+    - serie_id (requerido): ID de la serie a la que pertenece el capítulo.
+
+Ejemplo de cuerpo de la petición:
+
+```json
+{
+  "order": 1,
+  "serie_id": 1
+}
+```
+Ejemplo de respuesta:
+```json
+{
+  "id": 2,
+  "type": "chapter",
+  "attributes": {
+    "order": 2,
+    "created_at": "2024-09-30T00:00:00Z"
+  }
+}
+```
+#### Mostrar un capítulo específico
+
+- URL: /v1/chapters/{id}
+- Método: GET
+- Descripción: Retorna la información de un capítulo específico.
+- Autenticación requerida: Sí (Bearer Token).
+- Parámetros:
+    - id (requerido): ID del capítulo.
+
+Ejemplo de respuesta:
+```json
+{
+  "id": 1,
+  "type": "chapter",
+  "attributes": {
+    "order": 1,
+    "created_at": "2024-09-30T00:00:00Z"
+  },
+  "relationships": {
+    "serie": {
+      "id": 1,
+      "name": "Serie 1"
+    }
+  }
+}
+```
+
+#### Actualizar un capítulo
+- URL: /v1/chapters/{id}
+- Método: POST
+- Descripción: Actualiza los datos de un capítulo existente.
+- Autenticación requerida: Sí (Bearer Token).
+- Parámetros:
+    - id (requerido): ID del capítulo.
+
+Ejemplo de cuerpo de la petición:
+```json
+{
+    "id": 2,
+    "order": 2,
+    "_method":"PUT"
+}
+```
+Ejemplo de respuesta:
+```json
+{
+    "id": 1,
+    "type": "chapter",
+    "attributes": {
+        "order": 2,
+        "created_at": "2024-09-30T00:00:00Z"
+    }
+}
+```
+#### Eliminar un capítulo
+- URL: /v1/chapters/{id}
+- Método: DELETE
+- Descripción: Elimina un capítulo específico.
+- Autenticación requerida: Sí (Bearer Token).
+- Parámetros:
+    - id (requerido): ID del capítulo.
+
+Ejemplo de respuesta:
+```json
+{
+    "message": "Capítulo eliminado correctamente."
+}
+```
+### Imágenes
+#### Crear una nueva imagen
+URL: /v1/images
+Método: POST
+Descripción: Sube una nueva imagen.
+Autenticación requerida: Sí (Bearer Token).
+Ejemplo de cuerpo de la petición:
+```json
+{
+    "order":"2",
+    "image":"url_to_image"
+}
+```
+Ejemplo de respuesta:
+
+```json
+{
+  "id": 2,
+  "type": "image",
+  "attributes": {
+    "order": 2,
+    "image": "url_to_image"
+  }
+}
+```
+
+#### Eliminar una imagen
+- URL: /v1/images/{id}
+- Método: DELETE
+- Descripción: Elimina una imagen específica.
+- Autenticación requerida: Sí (Bearer Token).
+- Parámetros:
+    - id (requerido): ID de Imagen.
+
+Ejemplo de respuesta:
+```json
+{
+  "message": "Imagen eliminada correctamente."
+}
+```
