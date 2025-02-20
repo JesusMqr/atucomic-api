@@ -23,8 +23,8 @@ class StoreImageRequest extends FormRequest
     {
         return [
             'chapter_id'=>'required|exists:chapters,id',
-            'order'=>'required|numeric',
-            'image'=>'required'
+            'order_number'=>'required|numeric',
+            'image_url'=>'required|url'
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateChapterRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,9 @@ class UpdateChapterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //'id' => 'required| exists:chapters,id',
-            'order_number'=>'required|numeric',
-            'image_url' => 'nullable|url',
-            'serie_id' => 'required| exists:series,id',
-            //'owner_id' => 'required| exists:users,id',
 
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $this->user()->id,
         ];
     }
 }

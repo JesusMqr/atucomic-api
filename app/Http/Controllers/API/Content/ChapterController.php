@@ -9,6 +9,7 @@ use App\Http\Resources\ChapterResource;
 use App\Models\Chapter;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ChapterController extends Controller
@@ -20,8 +21,12 @@ class ChapterController extends Controller
     }
 
     public function store(StoreChapterRequest $request){
-        $chapter=$request->user()->chapters()->create($request->all());
-        $chapter->save();
+        $user=Auth::user();
+
+        $chapter=$user->chapters()->create(array_merge(
+            $request->validated(),
+            ['owner_id' => $user->id]
+        ));
 
         return response()->json(
             new ChapterResource($chapter),
@@ -29,10 +34,12 @@ class ChapterController extends Controller
         );
     }
     public function update(UpdateChapterRequest $request,Chapter $chapter){
-        $this->authorize('update',$chapter);
-        $chapter->update($request->all());
+        $this->authorize('update', $chapter);
+
+        $chapter->update($request->validated());
         return response()->json(
-            new ChapterResource($chapter),Response::HTTP_OK
+            new ChapterResource($chapter)
+            ,Response::HTTP_OK
         );
     }
     public function destroy(Chapter $chapter){

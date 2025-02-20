@@ -11,6 +11,8 @@ use App\Models\Serie;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+
 
 class SerieController extends Controller
 {
@@ -25,18 +27,25 @@ class SerieController extends Controller
         return new SerieCollection($series);
     }
     public function store(StoreSerieRequest $request){
-        $serie = $request->user()->series()->create($request->all());
-        $serie->save();
+        $user= Auth::user();
+        $serie = $user->series()->create(array_merge(
+            $request->validated(),
+            ['owner_id' => $user->id]
+        ));
 
         return response()->json(
             new SerieResource($serie),
             Response::HTTP_CREATED
         );
     }
+
     public function show(Serie $series){
-        $series = $series->load('chapters','user');
+        $series = $series->load(['chapters' => function($query) {
+            $query->orderBy('order_number', 'desc');
+        }, 'user']);
         return new SerieResource($series);
     }
+
     public function update(UpdateSerieRequest $request,Serie $series){
         $this->authorize('update',$series);
 

@@ -18,10 +18,14 @@ class SerieResource extends JsonResource
             'id'=>$this->id,
             'type'=>'serie',
             'attributes'=>[
+                'type'=>$this->type,
                 'title'=>$this->title,
                 'description'=>$this->description,
-                'image'=>$this->image,
-                'author' =>$this->user->name,
+                'banner_image'=>$this->banner_image_url,
+                'cover_image'=>$this->cover_image_url,
+                'author' =>$this->author,
+                'owner' =>$this->user->name,
+                'status'=>$this->status,
                 'updated_at'=>$this->updated_at,
             ],
             'relationships'=>[

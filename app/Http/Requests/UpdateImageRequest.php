@@ -22,8 +22,8 @@ class UpdateImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order'=>'required|numeric',
-            'image'=>'required'
+            'order_number'=>'required|numeric',
+            'image_url'=>'required|url'
         ];
     }
 }

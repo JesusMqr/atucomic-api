@@ -22,9 +22,13 @@ class StoreSerieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title"         => 'required',
-            "description"   => 'required',
-            "image"         => 'required',
+            "title"                 => 'required|string|max:255',
+            "description"           => 'string|nullable',
+            "cover_image_url"       => 'url|nullable',
+            "banner_image_url"      => 'url|nullable',
+            "author"                => 'nullable|string|max:255',
+            'type'                  => 'required',
+            "status"                => 'required',
         ];
     }
 }

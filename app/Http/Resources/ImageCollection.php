@@ -19,8 +19,8 @@ class ImageCollection extends ResourceCollection
                 'id' => $image->id,
                 'type' => 'image',
                 'attributes' => [
-                    'order'=>$image->order,
-                    'image' => $image->image,
+                    'order_number'=>$image->order_number,
+                    'image' => $image->image_url,
                 ]
             ];
         })->toArray();

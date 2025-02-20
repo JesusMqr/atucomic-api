@@ -10,14 +10,16 @@ class Chapter extends Model
     use HasFactory;
 
     protected $fillable =[
-        'order',
-        'serie_id'
+        'order_number',
+        'image_url',
+        'serie_id',
+        //'owner_id'
     ];
 
     public function images(){
-        return $this->hasMany(Image::class)->orderBy('order');
+        return $this->hasMany(Image::class)->orderBy('order_number');
     }
     public function serie(){
-        return $this->belongsTo(Serie::class);
+        return $this->belongsTo(Serie::class,'serie_id');
     }
 }

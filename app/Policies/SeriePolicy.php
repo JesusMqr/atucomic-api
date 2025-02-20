@@ -15,9 +15,9 @@ class SeriePolicy
     }
 
     public function update(User $user,Serie $series):bool{
-        return $user->id  === $series->user_id;
+        return $user->id  === $series->owner_id;
     }
     public function delete(User $user,Serie $series):bool{
-        return $user->id  === $series->user_id;
+        return $user->id  === $series->owner_id;
     }
 }

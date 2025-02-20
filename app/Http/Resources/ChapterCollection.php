@@ -19,7 +19,8 @@ class ChapterCollection extends ResourceCollection
                 'id'=>$chapter->id,
                 'type'=>'chapter',
                 'attributes'=>[
-                    'order'=>$chapter->order,
+                    'image'=>$chapter->image_url,
+                    'order_number'=>$chapter->order_number,
                     'created_at'=>$chapter->created_at,
                 ]
             ];

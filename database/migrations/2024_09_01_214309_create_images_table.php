@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->float('order');
-            $table->text('image');
-            $table->unsignedBigInteger('chapter_id');
-            $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('order_number');
+            $table->string('image_url');
+            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('chapter_id')->constrained('chapters')->cascadeOnDelete();
             $table->timestamps();
         });
     }

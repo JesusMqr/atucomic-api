@@ -11,13 +11,18 @@ class Serie extends Model
     protected $fillable = [
         "title",
         "description",
-        "image",
+        "type",
+        "status",
+        "author",
+        "cover_image_url",
+        "banner_image_url",
+
     ];
 
     public function chapters(){
-        return $this->hasMany(Chapter::class)->orderBy('order','desc');
+        return $this->hasMany(Chapter::class)->orderBy('order_number','desc');
     }
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'owner_id');
     }
 }

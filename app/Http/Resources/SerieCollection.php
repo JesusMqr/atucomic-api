@@ -20,8 +20,10 @@ class SerieCollection extends ResourceCollection
                 'type'=> 'serie',
                 'attributes'=>[
                     'title'=>$serie->title,
-                    'image'=>$serie->image,
-                    'updated_at'=>$serie->updated_at
+                    'type'=> $serie->type,
+                    'cover_image'=>$serie->cover_image_url,
+                    'updated_at'=>$serie->updated_at,
+                    'status'=>$serie->status,
                 ]
             ];
         })->toArray();

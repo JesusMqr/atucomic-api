@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
-            $table->float('order');
-            $table->unsignedBigInteger('serie_id');
-            $table->foreign('serie_id')->references('id')->on('series')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
+            $table->float('order_number');
+            $table->string('image_url')->nullable();
+            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('serie_id')->constrained('series')->cascadeOnDelete();$table->timestamps();
         });
     }
 

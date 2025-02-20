@@ -22,7 +22,8 @@ class StoreChapterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order'=>'required|numeric',
+            'order_number'=>'required|numeric',
+            'image_url'=>'nullable|url',
             'serie_id'=>'required|exists:series,id'
         ];
     }

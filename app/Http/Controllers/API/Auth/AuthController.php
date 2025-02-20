@@ -14,7 +14,7 @@ class AuthController extends Controller
         $request->validate([
             "email" => "required|email",
             "password" => "required",
-            "device_name" => "required",
+            //"device_name" => "required",
         ]);
 
         $user = User::where('email',$request->email)->first();
@@ -26,7 +26,9 @@ class AuthController extends Controller
 
         return response()->json([
             'data'=>[
-                'token'=>$user->createToken($request->device_name)->plainTextToken,
+                //'token'=>$user->createToken($request->device_name)->plainTextToken,
+                'message'=>'User logged in successfully',
+                'token'=>$user->createToken('')->plainTextToken,
             ]
         ],Response::HTTP_OK);
     }
@@ -36,16 +38,17 @@ class AuthController extends Controller
             'name'=>'required',
             'email'=>'required|email|unique:users,email',
             'password'=>'required|min:8|confirmed',
-            'device_name'=>'required',
+            //'device_name'=>'required',
         ]);
 
         $user = User::create($request->all());
         $user->password = Hash::make($request->password);
         $user->save();
-        $token = $user->createToken($request->device_name)->plainTextToken;
-
+        //$token = $user->createToken($request->device_name)->plainTextToken;
+        $token = $user->createToken('')->plainTextToken;
         return response()->json([
             'data'=>[
+                'message'=>'User created successfully',
                 'token'=>$token,
             ]
         ],Response::HTTP_CREATED);

@@ -46,13 +46,13 @@ class User extends Authenticatable
         ];
     }
     public function series(){
-        return $this->hasMany(Serie::class);
+        return $this->hasMany(Serie::class,'owner_id');
     }
 
     public function chapters(){
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Chapter::class, 'owner_id');
     }
     public function images(){
-        return $this->hasMany(Image::class);
+        return $this->hasMany(Image::class, 'owner_id');
     }
 }

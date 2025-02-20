@@ -36,7 +36,7 @@ class UserProfileController extends Controller
 
         return response()->json([
             'message' => 'Profile updated successfully',
-            'user' => $user
+            'user' => new ProfileResource($user),
         ], Response::HTTP_OK);
 
     }

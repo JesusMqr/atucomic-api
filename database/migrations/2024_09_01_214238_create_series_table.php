@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('image')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('type');
+            $table->string('status');
+            $table->string('author')->nullable();
+            $table->string('cover_image_url')->nullable();
+            $table->string('banner_image_url')->nullable();
+            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

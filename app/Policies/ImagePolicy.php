@@ -15,9 +15,9 @@ class ImagePolicy
         //
     }
     public function update(User $user,Image $image){
-        return $user->id === $image->user_id;
+        return $user->id === $image->owner_id;
     }
     public function delete(User $user,Image $image){
-        return $user->id === $image->user_id;
+        return $user->id === $image->owner_id;
     }
 }

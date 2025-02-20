@@ -18,8 +18,9 @@ class ChapterResource extends JsonResource
             'id' => $this->id,
             'type' => 'chapter',
             'attributes' => [
-                'order' => $this->order,
+                'order_number' => $this->order_number,
                 'created_at'=>$this->created_at,
+                'image' => $this->image_url,
             ],
             'relationships' => [
                 'images' => new ImageCollection($this->images),
