@@ -121,8 +121,11 @@ Ejemplo de respuesta:
             ],
             "serie": {
                 "id": 1,
-                "name": "Serie"
-            }
+                "name": "Serie",
+                "type": "Manga",
+            },
+            "previous_chapter": null,
+            "next_chapter": 14
         }
     }
 }
