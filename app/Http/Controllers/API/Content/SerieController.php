@@ -23,7 +23,7 @@ class SerieController extends Controller
             return $this->search($request);
         }
 
-        $series = Serie::orderBy('updated_at','desc')->paginate(10  );
+        $series = Serie::orderBy('updated_at','desc')->Paginate(10);
         return new SerieCollection($series);
     }
     public function store(StoreSerieRequest $request){
